@@ -2,13 +2,11 @@
 
 {% block title %}Hello EtudiantsController!{% endblock %}
 
-
-
-
 {% block body %}
 
 {% if app.user == null %}
-    <div>
+    
+    <div style="margin-left:auto;  margin-right: auto; margin-top:300px;">
         <a href="{{ path('app_login') }}" class="btn btn-info">Se connecter d'abord !!! 😜😜 >></a>
     </div>
 {% endif %}
