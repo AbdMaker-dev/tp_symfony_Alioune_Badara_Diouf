@@ -9,6 +9,9 @@ use App\Form\EtudiantsType ;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\EtudiantsRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Constraints\Json;
 
 /**
  * @Route("/etudiants")
@@ -39,4 +42,33 @@ class EtudiantsController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
+    /**
+     * Get all regions by Country (Ajax)
+     * 
+     * @Route("/recherche", name="etudiants_recherche", methods={"POST"})
+     * 
+    */
+    
+    public function recherche(Request $request,SerializerInterface $sriz,EtudiantsRepository $etuRip)
+    {
+        $result = [] ;
+        if($request->isXmlHttpRequest()){
+            if(!isset($_POST['allEtu'])){
+                $val =  $_POST['val'] ;
+                $type = $_POST['type'] ;
+                $result = $etuRip->getbySomefield($type,$val) ;
+            }else{
+                $result = $etuRip->getAll() ;
+              
+            }
+
+            return new JsonResponse(array('data'=>json_encode($result))) ;
+        }
+    }
+    
+
+
+
 }

@@ -174,4 +174,10 @@ class Etudiants
 
         return $this;
     }
+
+    public function toString()
+    {
+       return ["nom"=>$this->nom, "prenom"=>$this->prenom, "tel"=>$this->tel, "id"=>$this->id,
+       "matricule"=>$this->matricule, "bourse"=>$this->bourse, "adresse"=>$this->adresse,] ;
+    }
 }

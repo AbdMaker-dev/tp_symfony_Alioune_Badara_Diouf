@@ -36,15 +36,39 @@ class EtudiantsRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Etudiants
+    
+    public function findOneBySomeField($field,$value): ?array
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('e.'.$field.' LIKE :val')
+            ->setParameter('val','%'.$value.'%')
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
-    */
+
+    public function getbySomefield($type,$val)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT * FROM etudiants e INNER JOIN chambres c
+            WHERE e.'.$type.' LIKE "%'.$val.'%" AND e.chambre_id = c.id AND e.id
+            ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function getAll()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT * FROM etudiants e INNER JOIN chambres c
+            WHERE e.chambre_id = c.id AND e.id 
+            ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(); 
+    }
+    
 }
